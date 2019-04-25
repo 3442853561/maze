@@ -1,0 +1,7 @@
+[package]
+name = "casaliuqi_maze"
+version = "0.0.1"
+authors = ["casaliuqi.com", "3442853561"]
+
+[dependencies]
+png = "0.14.*"
