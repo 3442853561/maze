@@ -5,3 +5,4 @@ authors = ["casaliuqi.com", "3442853561"]
 
 [dependencies]
 png = "0.14.*"
+failure = "*"
