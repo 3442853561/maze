@@ -1,5 +1,6 @@
 extern crate png;
 use png::HasParameters;
+use png::chunk::pHYs;
 
 extern crate failure;
 use failure::Error;
@@ -10,9 +11,9 @@ use rand::rand;
 use std::path::Path;
 use std::fs::File;
 use std::io::BufWriter;
- 
+
 fn main() -> Result<(), Error>{
-    for i in 0..100 {
+    for i in 0..3 {
         let mut seed = i;
         let path_str = format!("./image_{}.png", i);
         let path = Path::new(&path_str);
@@ -27,7 +28,7 @@ fn main() -> Result<(), Error>{
         
         
         
-        writer.write_chunk([112, 72, 89, 115], &[0, 0, 46, 36, 0, 0, 46, 36, 1])?;
+        writer.write_chunk(pHYs, &[0, 0, 46, 35, 0, 0, 46, 35, 1])?;
         writer.write_image_data(&data)?;
         println!("{}: {}", i, rand(&mut seed));
     }
