@@ -1,6 +1,7 @@
 extern crate png;
 use png::HasParameters;
 use png::chunk::pHYs;
+use png::{PixelDimensions, Unit};
 
 extern crate failure;
 use failure::Error;
@@ -11,6 +12,12 @@ use rand::rand;
 use std::path::Path;
 use std::fs::File;
 use std::io::BufWriter;
+
+fn pixel_dims_to_data(pixel_dims: PixelDimensions) -> Vec<u8> {
+    let _xppu = pixel_dims.xppu.to_be_bytes();
+    let _yppu = pixel_dims.yppu.to_be_bytes();
+    vec![_xppu[0], _xppu[1], _xppu[2], _xppu[3], _yppu[0], _yppu[1], _yppu[2], _yppu[3], pixel_dims.unit as u8]
+}
 
 fn main() -> Result<(), Error>{
     for i in 0..3 {
@@ -25,13 +32,12 @@ fn main() -> Result<(), Error>{
         
         let mut writer = encoder.write_header()?;
         let mut data = vec![255; 1500 * 1500 * 3];
-        
-        
-        
-        writer.write_chunk(pHYs, &[0, 0, 46, 35, 0, 0, 46, 35, 1])?;
-        writer.write_image_data(&data)?;
         println!("{}: {}", i, rand(&mut seed));
+
+        writer.write_chunk(pHYs, &pixel_dims_to_data(PixelDimensions{xppu: 11811u32, yppu: 11811u32, unit: Unit::Meter}))?;
+        writer.write_image_data(&data)?;
     }
     println!("Done!");
     Ok(())
 }
+
