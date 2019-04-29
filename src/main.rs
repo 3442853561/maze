@@ -7,11 +7,14 @@ extern crate failure;
 use failure::Error;
 
 mod rand;
-use rand::rand;
+pub use rand::rand;
 
 use std::path::Path;
 use std::fs::File;
 use std::io::BufWriter;
+
+mod template;
+pub use template::*;
 
 fn pixel_dims_to_data(pixel_dims: PixelDimensions) -> Vec<u8> {
     let _xppu = pixel_dims.xppu.to_be_bytes();
